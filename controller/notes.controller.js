@@ -14,11 +14,11 @@ exports.createNote = (req, res) => {
             noteTxt: noteTxt
         }
         Notes.create(noteSchema).then(note => {
-            return res.send(note);
+            return res.status(200).send(note);
         }).catch(error => {
             return res.send({
                 message: 'error while creating a note',
-                responseCode: 500,
+                responseCode: 400,
                 error: error.message
             })
         })
@@ -31,14 +31,14 @@ exports.listAllNotes = (req, res) => {
         if (!allNotes) {
             return res.send({
                 message: 'there is no notes available',
-                responseCode: 400
+                responseCode: 404
             })
         }
-        return res.send(allNotes);
+        return res.status(200).send(allNotes);
     }).catch(error => {
         return res.send({
             message: 'there is some error while retrieving notes',
-            responseCode: 500,
+            responseCode: 400,
             error: error.message
         })
     })
@@ -49,11 +49,11 @@ exports.listNoteById = (req, res) => {
     Notes.findById(noteId).then(notes => {
         if (!notes) {
             return res.send({
-                message: 'there is no notes available',
-                responseCode: 400
+                message: 'there is no notes available with id' + noteId,
+                responseCode: 404
             })
         }
-        return res.send(notes);
+        return res.status(200).send(notes);
     }).catch(error => {
         if (error.kind == 'ObjectId') {
             return res.send({
@@ -63,7 +63,7 @@ exports.listNoteById = (req, res) => {
         }
         return res.send({
             message: 'there is some error while retrieving notes',
-            responseCode: 500,
+            responseCode: 400,
             error: error.message
         })
     })
@@ -88,7 +88,7 @@ exports.updateNote = (req, res) => {
             if (!note) {
                 return res.send({
                     message: 'no notes available to update with id' + noteId,
-                    responseCode: 400
+                    responseCode: 404
                 })
             }
             return res.send(note);
@@ -101,7 +101,7 @@ exports.updateNote = (req, res) => {
             }
             return res.send({
                 message: 'error while updating a note',
-                responseCode: 500,
+                responseCode: 400,
                 error: error.message
             })
         })
@@ -114,10 +114,10 @@ exports.deleteNote = (req, res) => {
         if (!note) {
             return res.send({
                 message: "Note not found with id " + noteId,
-                responseCode: 400
+                responseCode: 404
             });
         }
-        res.send({
+        res.status(200).send({
             message: "Note deleted successfully!",
             note: note
         });
@@ -130,7 +130,7 @@ exports.deleteNote = (req, res) => {
         }
         return res.send({
             message: "Could not delete note with id " + req.params.noteId,
-            responseCode: 500
+            responseCode: 400
         });
     });
 

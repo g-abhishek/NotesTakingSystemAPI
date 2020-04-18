@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-dbURL = 'mongodb+srv://Abhishek:Abhishek@cluster0-k6g35.mongodb.net/notesdb?retryWrites=true&w=majority';
+dbURL = 'mongodb+srv://*******:*******@cluster0-k6g35.mongodb.net/notesdb?retryWrites=true&w=majority';
 
 mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true }, ()=>{
     console.log('connected to database');
